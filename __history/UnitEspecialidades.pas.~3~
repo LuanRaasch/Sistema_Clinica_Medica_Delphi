@@ -1,0 +1,34 @@
+unit UnitEspecialidades;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.AppAnalytics, Vcl.Mask;
+
+type
+  TunitCadEspecialidades = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    DBNavigator1: TDBNavigator;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBEdit2: TDBEdit;
+    Label4: TLabel;
+    DBEdit3: TDBEdit;
+    DBEdit1: TDBEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  unitCadEspecialidades: TunitCadEspecialidades;
+
+implementation
+
+{$R *.dfm}
+
+end.

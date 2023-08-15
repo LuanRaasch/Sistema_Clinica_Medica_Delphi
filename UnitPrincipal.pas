@@ -1,0 +1,111 @@
+unit UnitPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Vcl.Imaging.jpeg, unitDM;
+
+type
+  TformPrincipal = class(TForm)
+    MainMenu1: TMainMenu;
+    Sistema1: TMenuItem;
+    Sair1: TMenuItem;
+    Cadastro1: TMenuItem;
+    Pacientes1: TMenuItem;
+    Agendamentos1: TMenuItem;
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Image1: TImage;
+    Especialidades1: TMenuItem;
+    BitBtn3: TBitBtn;
+    Relatrios1: TMenuItem;
+    RelatrioAgendamentos1: TMenuItem;
+    RelAgendamentosHoje1: TMenuItem;
+    RelatrioPacientes1: TMenuItem;
+    procedure Sair1Click(Sender: TObject);
+    procedure Pacientes1Click(Sender: TObject);
+    procedure Agendamentos1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure Especialidades1Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure RelatrioAgendamentos1Click(Sender: TObject);
+    procedure RelatrioPacientes1Click(Sender: TObject);
+    procedure RelAgendamentosHoje1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  formPrincipal: TformPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitCadPacientes, UnitCadAgendamentos, UnitEspecialidades, PassWord;
+
+procedure TformPrincipal.Agendamentos1Click(Sender: TObject);
+begin
+ formCadAgendamentos.ShowModal;
+end;
+
+procedure TformPrincipal.BitBtn1Click(Sender: TObject);
+begin
+ formCadPacientes.ShowModal;
+end;
+
+procedure TformPrincipal.BitBtn2Click(Sender: TObject);
+begin
+ formCadAgendamentos.ShowModal;
+end;
+
+procedure TformPrincipal.BitBtn3Click(Sender: TObject);
+begin
+ unitCadEspecialidades.ShowModal;
+end;
+
+procedure TformPrincipal.Especialidades1Click(Sender: TObject);
+begin
+ unitCadEspecialidades.ShowModal;
+end;
+
+procedure TformPrincipal.FormCreate(Sender: TObject);
+begin
+ Password.TPasswordDlg.Create(Self);
+
+end;
+
+procedure TformPrincipal.Pacientes1Click(Sender: TObject);
+begin
+ formCadPacientes.ShowModal;
+end;
+
+procedure TformPrincipal.RelAgendamentosHoje1Click(Sender: TObject);
+begin
+ DataModule1.verificaAgendamentoHoje;
+ formCadAgendamentos.reportAgenHoje.Print;
+end;
+
+procedure TformPrincipal.RelatrioAgendamentos1Click(Sender: TObject);
+begin
+ UnitCadAgendamentos.formCadAgendamentos.reportAgen.Print
+end;
+
+procedure TformPrincipal.RelatrioPacientes1Click(Sender: TObject);
+begin
+ formCadPacientes.relPacCadas.Print;
+end;
+
+procedure TformPrincipal.Sair1Click(Sender: TObject);
+begin
+ Application.Terminate;
+end;
+
+end.

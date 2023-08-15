@@ -1,0 +1,111 @@
+unit unitDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, VCL.Dialogs, UnitCadAgendamentos;
+
+type
+  TDataModule1 = class(TDataModule)
+    Conexao: TFDConnection;
+    tbPaciente: TFDTable;
+    tbAgendamento: TFDTable;
+    dsPaciente: TDataSource;
+    dsAgendamento: TDataSource;
+    tbPacienteid: TFDAutoIncField;
+    tbPacientenome: TStringField;
+    tbPacientecelular: TStringField;
+    tbPacientedata_cadastro: TDateField;
+    tbPacientecpf: TStringField;
+    tbEspecialidade: TFDTable;
+    dsEspecialidade: TDataSource;
+    tbEspecialidadeid: TFDAutoIncField;
+    tbEspecialidadenome_especialidade: TStringField;
+    tbAgendamentoid: TFDAutoIncField;
+    tbAgendamentoid_paciente: TIntegerField;
+    tbAgendamentoid_especialidade: TIntegerField;
+    tbAgendamentodata: TStringField;
+    tbAgendamentohora: TStringField;
+    tbAgendamentomedico: TStringField;
+    qtdPacientes: TFDQuery;
+    consultaCpf: TFDQuery;
+    tbAgendamentonomePaciente: TStringField;
+    tbAgendamentonomeEspecialidade: TStringField;
+    sqlAgenData: TFDQuery;
+    procedure tbPacienteAfterInsert(DataSet: TDataSet);
+    procedure tbPacienteAfterDelete(DataSet: TDataSet);
+    procedure tbPacienteAfterPost(DataSet: TDataSet);
+    procedure tbPacienteBeforePost(DataSet: TDataSet);
+    procedure tbAgendamentoAfterPost(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses UnitCadPacientes;
+
+{$R *.dfm}
+
+procedure TDataModule1.tbAgendamentoAfterPost(DataSet: TDataSet);
+var
+strMessage: String;
+begin
+ //strMessage := 'Consulta agendada para o dia ' + UnitCadAgendamentos.formCadAgendamentos.DBEdit2 + 'as' + UnitCadAgendamentos.formCadAgendamentos.DBEdit3 + 'horas';
+ ShowMessage('Agendamento criado');
+end;
+
+procedure TDataModule1.tbPacienteAfterDelete(DataSet: TDataSet);
+begin
+ qtdPacientes.Open;
+ UnitCadPacientes.formCadPacientes.lblQtdPaciente.Caption := qtdPacientes.Fields[0].AsString;
+ qtdPacientes.Close;
+
+end;
+
+procedure TDataModule1.tbPacienteAfterInsert(DataSet: TDataSet);
+begin
+ tbPacientedata_cadastro.Value := Date();
+end;
+
+procedure TDataModule1.tbPacienteAfterPost(DataSet: TDataSet);
+begin
+ qtdPacientes.Open;
+ UnitCadPacientes.formCadPacientes.lblQtdPaciente.Caption := qtdPacientes.Fields[0].AsString;
+ qtdPacientes.Close;
+end;
+
+procedure TDataModule1.tbPacienteBeforePost(DataSet: TDataSet);
+begin
+ consultaCpf.Close;
+ consultaCpf.SQL.Clear;
+ consultaCpf.SQL.Add('SELECT cpf FROM paciente WHERE cpf = :pCpf AND id <> :pID');
+ consultaCpf.ParamByName('pCpf').Value := UnitCadPacientes.formCadPacientes.DBEdit3.Text;
+ consultaCpf.ParamByName('pId').Value := tbPacienteid.Value;
+ consultaCpf.Open;
+
+ if (consultaCpf.RecordCount > 0) then
+  begin
+    ShowMessage('CPF já cadastrado!');
+    Abort;
+  end
+
+ else
+  begin
+    ShowMessage('Paciente cadastrado com sucesso!')
+  end;
+end;
+
+end.

@@ -1,0 +1,127 @@
+unit UnitCadAgendamentos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Mask, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.AppAnalytics, System.Actions,
+  Vcl.ActnList, Vcl.ComCtrls, Vcl.JumpList, ppProd, ppClass, ppReport, ppComm,
+  ppRelatv, ppDB, ppDBPipe, ppPrnabl, ppCtrls, ppBands, ppCache, ppDesignLayer,
+  ppParameter, ppTxPipe;
+
+type
+  TformCadAgendamentos = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    DBNavigator1: TDBNavigator;
+    Label4: TLabel;
+    Label6: TLabel;
+    DBEdit1: TDBEdit;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label5: TLabel;
+    Label7: TLabel;
+    DBEdit4: TDBEdit;
+    DBGrid1: TDBGrid;
+    DBLookupComboBox2: TDBLookupComboBox;
+    ppRelAgen: TppDBPipeline;
+    reportAgen: TppReport;
+    ppParameterList1: TppParameterList;
+    ppDesignLayers1: TppDesignLayers;
+    ppDesignLayer1: TppDesignLayer;
+    ppHeaderBand1: TppHeaderBand;
+    ppDetailBand1: TppDetailBand;
+    ppFooterBand1: TppFooterBand;
+    ppLabel1: TppLabel;
+    Label8: TLabel;
+    relAgendamentos: TButton;
+    ppLabel2: TppLabel;
+    ppDBText1: TppDBText;
+    ppLabel3: TppLabel;
+    ppDBText2: TppDBText;
+    ppLabel4: TppLabel;
+    ppDBText3: TppDBText;
+    ppLabel5: TppLabel;
+    ppDBText4: TppDBText;
+    ppLabel6: TppLabel;
+    ppDBText5: TppDBText;
+    ppLabel7: TppLabel;
+    ppDBText6: TppDBText;
+    ppLine1: TppLine;
+    ppAgenHoje: TppDBPipeline;
+    btnAgenHoje: TButton;
+    reportAgenHoje: TppReport;
+    ppParameterList2: TppParameterList;
+    ppDesignLayers2: TppDesignLayers;
+    ppDesignLayer2: TppDesignLayer;
+    ppHeaderBand2: TppHeaderBand;
+    ppDetailBand2: TppDetailBand;
+    ppFooterBand2: TppFooterBand;
+    ppLabel8: TppLabel;
+    ppDBText7: TppDBText;
+    ppLabel9: TppLabel;
+    ppDBText8: TppDBText;
+    ppLabel10: TppLabel;
+    ppDBText9: TppDBText;
+    ppLabel11: TppLabel;
+    ppDBText10: TppDBText;
+    ppLabel12: TppLabel;
+    ppDBText11: TppDBText;
+    procedure relAgendamentosClick(Sender: TObject);
+    procedure btnAgenHojeClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  formCadAgendamentos: TformCadAgendamentos;
+
+implementation
+
+{$R *.dfm}
+
+uses unitDM;
+
+//function verificaAgendamentoHoje():String;
+ //begin
+//DataModule1.sqlAgendata.close;
+ //DataModule1.sqlAgenData.Sql.Clear;
+ //DataModule1.sqlAgenData.SQL.Add('SELECT * FROM `agendamento` WHERE data = :pData ');
+ //DataModule1.sqlAgenData.ParamByName('pData').Value := DatetoStr(Now);
+ //DataModule1.sqlAgenData.Open;
+ //end;
+
+procedure TformCadAgendamentos.btnAgenHojeClick(Sender: TObject);
+var
+resultSql: String;
+begin
+  DataModule1.sqlAgendata.close;
+  DataModule1.sqlAgenData.Sql.Clear;
+  DataModule1.sqlAgenData.SQL.Add('SELECT * FROM `agendamento` WHERE data = :pData ');
+  DataModule1.sqlAgenData.ParamByName('pData').Value := DatetoStr(Now);
+  DataModule1.sqlAgenData.Open;
+  DataModule1.sqlAgenData.First;
+while not DataModule1.sqlAgenData.Eof do
+  begin
+   resultSql := DataModule1.sqlAgenData.FieldByName('medico').AsString;
+   resultSql := DataModule1.sqlAgenData.FieldByName('especialidade').AsString;
+   DataModule1.sqlAgenData.Next;
+   ShowMessage(resultSql);
+  end;
+   DataModule1.sqlAgenData.Close;
+end;
+
+
+
+procedure TformCadAgendamentos.relAgendamentosClick(Sender: TObject);
+begin
+ reportAgen.Print;
+end;
+
+end.

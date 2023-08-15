@@ -1,0 +1,18 @@
+program ClinicaProject;
+
+uses
+  Vcl.Forms,
+  UnitPrincipal in 'UnitPrincipal.pas' {formPrincipal},
+  UnitCadPacientes in 'UnitCadPacientes.pas' {formCadPacientes},
+  UnitCadAgendamentos in 'UnitCadAgendamentos.pas' {Form3};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TformPrincipal, formPrincipal);
+  Application.CreateForm(TformCadPacientes, formCadPacientes);
+  Application.CreateForm(TForm3, Form3);
+  Application.Run;
+end.
